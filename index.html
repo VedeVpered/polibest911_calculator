@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Розрахунок витрат матеріалів</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .result div {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Розрахунок витрат матеріалів</h1>
+        <label for="area">Площа (м²):</label>
+        <input type="number" id="area" placeholder="Введіть площу" />
+
+        <button onclick="calculate()">Розрахувати</button>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculate() {
+            const area = parseFloat(document.getElementById('area').value);
+            if (isNaN(area) || area <= 0) {
+                alert("Будь ласка, введіть коректну площу!");
+                return;
+            }
+
+            // Вихідні дані
+            const emalConsumption = 0.2; // кг/м²
+            const flokiConsumption = 0.025; // кг/м²
+            const lakConsumption = 0.120; // кг/м²
+            const emalPrice = 1260; // грн/кг
+            const flokiPrice = 1350; // грн/кг
+            const lakPrice = 1440; // грн/кг
+
+            // Розрахунки
+            let emalTotalKg = area * emalConsumption;
+            let flokiTotalKg = area * flokiConsumption;
+            let lakTotalKg = area * lakConsumption;
+
+            // Округлення в більшу сторону для емалі та лаку (флоки не округлюються)
+            emalTotalKg = Math.ceil(emalTotalKg);
+            lakTotalKg = Math.ceil(lakTotalKg);
+
+            // Вартість
+            let emalTotalPrice = emalTotalKg * emalPrice;
+            let flokiTotalPrice = flokiTotalKg * flokiPrice;
+            let lakTotalPrice = lakTotalKg * lakPrice;
+
+            // Загальна сума
+            let totalSum = emalTotalPrice + flokiTotalPrice + lakTotalPrice;
+
+            // Виведення результату
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <div><strong>Емаль (PoliBest911):</strong> ${emalTotalKg} кг × ${emalPrice} грн/кг = ${emalTotalPrice} грн</div>
+                <div><strong>Флоки:</strong> ${flokiTotalKg} кг × ${flokiPrice} грн/кг = ${flokiTotalPrice} грн</div>
+                <div><strong>Лак глянець:</strong> ${lakTotalKg} кг × ${lakPrice} грн/кг = ${lakTotalPrice} грн</div>
+                <div><strong>Загальна сума:</strong> ${totalSum} грн</div>
+            `;
+        }
+    </script>
+</body>
+</html>
